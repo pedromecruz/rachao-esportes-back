@@ -1,12 +1,13 @@
 package entidades;
 
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 public class Esportes {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     public static enum ListaEsportes{
@@ -14,4 +15,8 @@ public class Esportes {
         Volei,
         Basquete
     }
+
+    Esportes(){}
+
+
 }

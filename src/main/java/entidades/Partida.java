@@ -1,20 +1,32 @@
 package entidades;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.Date;
 
 public class Partida {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private String host;
+
+    @ManyToMany
+    @JoinColumn(
+            name = "jogador_id",
+            referencedColumnName = "id",
+            nullable = false)
+    private Jogador jogadorHost;
+
+    @OneToOne
+    @JoinColumn(
+            name = "esporte_id",
+            referencedColumnName = "id",
+            nullable = false)
+    private Esportes esporte;
+
     private String local;
     private int quantidadeTimes;
     private Date DataJogo;
-    private String esportePartida;
     private String statusPartida;
     private int duracaoPartida;
     private int duracaoReserva;
@@ -22,60 +34,12 @@ public class Partida {
 
     public Partida(){}
 
-    public String getHost() {
-        return host;
+    public int getQuantidadeJogos() {
+        return quantidadeJogos;
     }
 
-    public void setHost(String host) {
-        this.host = host;
-    }
-
-    public String getLocal() {
-        return local;
-    }
-
-    public void setLocal(String local) {
-        this.local = local;
-    }
-
-    public int getQuantidadeTimes() {
-        return quantidadeTimes;
-    }
-
-    public void setQuantidadeTimes(int quantidadeTimes) {
-        this.quantidadeTimes = quantidadeTimes;
-    }
-
-    public Date getDataJogo() {
-        return DataJogo;
-    }
-
-    public void setDataJogo(Date dataJogo) {
-        DataJogo = dataJogo;
-    }
-
-    public String getEsportePartida() {
-        return esportePartida;
-    }
-
-    public void setEsportePartida(String esportePartida) {
-        this.esportePartida = esportePartida;
-    }
-
-    public String getStatusPartida() {
-        return statusPartida;
-    }
-
-    public void setStatusPartida(String statusPartida) {
-        this.statusPartida = statusPartida;
-    }
-
-    public int getDuracaoPartida() {
-        return duracaoPartida;
-    }
-
-    public void setDuracaoPartida(int duracaoPartida) {
-        this.duracaoPartida = duracaoPartida;
+    public void setQuantidadeJogos(int quantidadeJogos) {
+        this.quantidadeJogos = quantidadeJogos;
     }
 
     public int getDuracaoReserva() {
@@ -86,17 +50,67 @@ public class Partida {
         this.duracaoReserva = duracaoReserva;
     }
 
-    public int getQuantidadeJogos() {
-        return quantidadeJogos;
+    public int getDuracaoPartida() {
+        return duracaoPartida;
     }
 
-    public void setQuantidadeJogos(int quantidadeJogos) {
-        this.quantidadeJogos = quantidadeJogos;
+    public void setDuracaoPartida(int duracaoPartida) {
+        this.duracaoPartida = duracaoPartida;
+    }
+
+    public String getStatusPartida() {
+        return statusPartida;
+    }
+
+    public void setStatusPartida(String statusPartida) {
+        this.statusPartida = statusPartida;
+    }
+
+    public Date getDataJogo() {
+        return DataJogo;
+    }
+
+    public void setDataJogo(Date dataJogo) {
+        DataJogo = dataJogo;
+    }
+
+    public int getQuantidadeTimes() {
+        return quantidadeTimes;
+    }
+
+    public void setQuantidadeTimes(int quantidadeTimes) {
+        this.quantidadeTimes = quantidadeTimes;
+    }
+
+    public String getLocal() {
+        return local;
+    }
+
+    public void setLocal(String local) {
+        this.local = local;
+    }
+
+    public Esportes getEsporte() {
+        return esporte;
+    }
+
+    public void setEsporte(Esportes esporte) {
+        this.esporte = esporte;
+    }
+
+    public Jogador getJogadorHost() {
+        return jogadorHost;
+    }
+
+    public void setJogadorHost(Jogador jogadorHost) {
+        this.jogadorHost = jogadorHost;
     }
 
     public long getId() {
         return id;
     }
 
-
+    public void setId(long id) {
+        this.id = id;
+    }
 }

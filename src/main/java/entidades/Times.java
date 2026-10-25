@@ -1,7 +1,6 @@
 package entidades;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,19 +8,47 @@ import java.util.List;
 public class Times {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    List<Jogador> jogadoresTime = new ArrayList<>();
+
+    @ManyToMany
+    @JoinColumn(
+            name = "jogador_id",
+            referencedColumnName = "id",
+            nullable = false)
+    private Jogador jogador;
+
+    @ManyToMany
+    @JoinColumn(
+            name = "partida_id",
+            referencedColumnName = "id",
+            nullable = false)
+    private Partida partida;
 
     public long getId() {
         return id;
     }
 
-    public List<Jogador> getJogadoresTime() {
-        return jogadoresTime;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public void setJogadoresTime(List<Jogador> jogadoresTime) {
-        this.jogadoresTime = jogadoresTime;
+    public Jogador getJogador() {
+        return jogador;
     }
+
+    public void setJogador(Jogador jogador) {
+        this.jogador = jogador;
+    }
+
+    public Partida getPartida() {
+        return partida;
+    }
+
+    public void setPartida(Partida partida) {
+        this.partida = partida;
+    }
+
+
 }
+
