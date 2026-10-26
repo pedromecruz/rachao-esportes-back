@@ -1,32 +1,35 @@
-package entidades;
+package com.projeto.rachao.entidades;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 import java.util.Date;
 
+@Entity
 public class Partida {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToMany
-    @JoinColumn(
-            name = "jogador_id",
-            referencedColumnName = "id",
-            nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "jogador_id", nullable = false)
     private Jogador jogadorHost;
 
-    @OneToOne
-    @JoinColumn(
-            name = "esporte_id",
-            referencedColumnName = "id",
-            nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "esporte_id", nullable = false)
     private Esportes esporte;
 
     private String local;
     private int quantidadeTimes;
-    private Date DataJogo;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dataJogo;
     private String statusPartida;
     private int duracaoPartida;
     private int duracaoReserva;
@@ -67,11 +70,11 @@ public class Partida {
     }
 
     public Date getDataJogo() {
-        return DataJogo;
+        return dataJogo;
     }
 
     public void setDataJogo(Date dataJogo) {
-        DataJogo = dataJogo;
+        this.dataJogo = dataJogo;
     }
 
     public int getQuantidadeTimes() {

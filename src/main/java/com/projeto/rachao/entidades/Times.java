@@ -1,28 +1,25 @@
-package entidades;
+package com.projeto.rachao.entidades;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
-import java.util.ArrayList;
-import java.util.List;
-
+@Entity
 public class Times {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToMany
-    @JoinColumn(
-            name = "jogador_id",
-            referencedColumnName = "id",
-            nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "jogador_id", nullable = false)
     private Jogador jogador;
 
-    @ManyToMany
-    @JoinColumn(
-            name = "partida_id",
-            referencedColumnName = "id",
-            nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "partida_id", nullable = false)
     private Partida partida;
 
     public long getId() {

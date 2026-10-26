@@ -1,34 +1,39 @@
-package entidades;
+package com.projeto.rachao.entidades;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 import java.util.Date;
 
+@Entity
 public class Mensagem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToMany
-    @JoinColumn(
-            name = "jogador_id",
-            referencedColumnName = "id",
-            nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "jogador_id", nullable = false)
     private Jogador jogador;
 
-    @OneToMany
-    @JoinColumn(
-            name = "chat_id",
-            referencedColumnName = "id",
-            nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "chat_id", nullable = false)
     private Chat chat;
 
+    @Column(nullable = false)
     private String textoMensagem;
 
+    @Temporal(TemporalType.TIMESTAMP)
     private Date dataMensagem;
 
-    Mensagem() {
+    public Mensagem() {
     }
 
     public Jogador getJogador() {

@@ -1,27 +1,22 @@
-package entidades;
+package com.projeto.rachao.entidades;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 
 import java.util.Date;
 
-public class Jogador {
+public class JogadorDTO {
 
     @Id
     @GeneratedValue
     private long id;
     private String email;
-    private String senha;
     private String nome;
     private String cep;
     private Date dataNascimento;
     private String descricao;
 
-    public Jogador() {
-    }
-
-    public Jogador(String nome) {
-        this.nome = nome;
+    public JogadorDTO(){
     }
 
     public String getEmail() {
@@ -30,14 +25,6 @@ public class Jogador {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
     }
 
     public String getNome() {

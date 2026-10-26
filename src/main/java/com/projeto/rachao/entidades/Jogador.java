@@ -1,22 +1,33 @@
-package entidades;
+package com.projeto.rachao.entidades;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 import java.util.Date;
 
-public class JogadorDTO {
+@Entity
+public class Jogador {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(nullable = false, unique = true)
     private String email;
+    @Column(nullable = false)
+    private String senha;
     private String nome;
     private String cep;
     private Date dataNascimento;
     private String descricao;
 
-    public JogadorDTO(){
+    public Jogador() {
+    }
+
+    public Jogador(String nome) {
+        this.nome = nome;
     }
 
     public String getEmail() {
@@ -25,6 +36,14 @@ public class JogadorDTO {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
     public String getNome() {
@@ -61,5 +80,9 @@ public class JogadorDTO {
 
     public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }
