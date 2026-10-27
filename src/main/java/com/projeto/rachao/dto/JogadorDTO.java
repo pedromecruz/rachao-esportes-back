@@ -1,4 +1,4 @@
-package com.projeto.rachao.entidades;
+package com.projeto.rachao.dto;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
