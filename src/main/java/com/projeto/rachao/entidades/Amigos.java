@@ -17,6 +17,12 @@ public class Amigos {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    public enum StatusAmizade {
+        PENDENTE,
+        ACEITA,
+        RECUSADA
+    }
+
     @ManyToOne
     @JoinColumn(name = "ID_JOGADOR", nullable = false)
     private Jogador jogador;
