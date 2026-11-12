@@ -53,8 +53,7 @@ public class JogadorTimeController {
     @PutMapping("/{id}")
     public ResponseEntity<JogadorTime> atualizar(
             @PathVariable Long id,
-            @RequestBody JogadorTime registro
-    ) {
+            @RequestBody JogadorTime registro) {
         if (!repository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }

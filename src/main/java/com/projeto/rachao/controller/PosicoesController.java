@@ -54,8 +54,7 @@ public class PosicoesController {
     @PutMapping("/{id}")
     public ResponseEntity<Posicoes> atualizar(
             @PathVariable Long id,
-            @RequestBody Posicoes registro
-    ) {
+            @RequestBody Posicoes registro) {
         if (!repository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }

@@ -53,8 +53,7 @@ public class MensagemController {
     @PutMapping("/{id}")
     public ResponseEntity<Mensagem> atualizar(
             @PathVariable Long id,
-            @RequestBody Mensagem registro
-    ) {
+            @RequestBody Mensagem registro) {
         if (!repository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }

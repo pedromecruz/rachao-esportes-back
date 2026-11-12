@@ -23,8 +23,19 @@ public class Chat {
     public Chat() {
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public Partida getPartida() { return partida; }
-    public void setPartida(Partida partida) { this.partida = partida; }
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Partida getPartida() {
+        return partida;
+    }
+
+    public void setPartida(Partida partida) {
+        this.partida = partida;
+    }
 }

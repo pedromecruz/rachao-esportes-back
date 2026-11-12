@@ -53,8 +53,7 @@ public class ChatController {
     @PutMapping("/{id}")
     public ResponseEntity<Chat> atualizar(
             @PathVariable Long id,
-            @RequestBody Chat registro
-    ) {
+            @RequestBody Chat registro) {
         if (!repository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }

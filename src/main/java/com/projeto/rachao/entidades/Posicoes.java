@@ -12,7 +12,6 @@ public class Posicoes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-
     public static enum PosicaoFutebol {
         Goleiro,
         Zagueiro,

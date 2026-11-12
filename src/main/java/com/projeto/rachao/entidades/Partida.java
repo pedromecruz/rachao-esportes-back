@@ -45,23 +45,78 @@ public class Partida {
     @Column(name = "QTD_JOGOS")
     private Integer qtdJogos;
 
-    public Partida() {}
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public Jogador getJogadorHost() { return jogadorHost; }
-    public void setJogadorHost(Jogador jogadorHost) { this.jogadorHost = jogadorHost; }
-    public Esportes getEsporte() { return esporte; }
-    public void setEsporte(Esportes esporte) { this.esporte = esporte; }
-    public Integer getQtdTimes() { return qtdTimes; }
-    public void setQtdTimes(Integer qtdTimes) { this.qtdTimes = qtdTimes; }
-    public LocalDateTime getDataHora() { return dataHora; }
-    public void setDataHora(LocalDateTime dataHora) { this.dataHora = dataHora; }
-    public StatusPartida.StatusAtual getStatus() { return status; }
-    public void setStatus(StatusPartida.StatusAtual status) { this.status = status; }
-    public String getLocal() { return local; }
-    public void setLocal(String local) { this.local = local; }
-    public LocalTime getDuracao() { return duracao; }
-    public void setDuracao(LocalTime duracao) { this.duracao = duracao; }
-    public Integer getQtdJogos() { return qtdJogos; }
-    public void setQtdJogos(Integer qtdJogos) { this.qtdJogos = qtdJogos; }
+    public Partida() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Jogador getJogadorHost() {
+        return jogadorHost;
+    }
+
+    public void setJogadorHost(Jogador jogadorHost) {
+        this.jogadorHost = jogadorHost;
+    }
+
+    public Esportes getEsporte() {
+        return esporte;
+    }
+
+    public void setEsporte(Esportes esporte) {
+        this.esporte = esporte;
+    }
+
+    public Integer getQtdTimes() {
+        return qtdTimes;
+    }
+
+    public void setQtdTimes(Integer qtdTimes) {
+        this.qtdTimes = qtdTimes;
+    }
+
+    public LocalDateTime getDataHora() {
+        return dataHora;
+    }
+
+    public void setDataHora(LocalDateTime dataHora) {
+        this.dataHora = dataHora;
+    }
+
+    public StatusPartida.StatusAtual getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusPartida.StatusAtual status) {
+        this.status = status;
+    }
+
+    public String getLocal() {
+        return local;
+    }
+
+    public void setLocal(String local) {
+        this.local = local;
+    }
+
+    public LocalTime getDuracao() {
+        return duracao;
+    }
+
+    public void setDuracao(LocalTime duracao) {
+        this.duracao = duracao;
+    }
+
+    public Integer getQtdJogos() {
+        return qtdJogos;
+    }
+
+    public void setQtdJogos(Integer qtdJogos) {
+        this.qtdJogos = qtdJogos;
+    }
 }

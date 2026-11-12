@@ -53,8 +53,7 @@ public class AmigosController {
     @PutMapping("/{id}")
     public ResponseEntity<Amigos> atualizar(
             @PathVariable Long id,
-            @RequestBody Amigos registro
-    ) {
+            @RequestBody Amigos registro) {
         if (!repository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }

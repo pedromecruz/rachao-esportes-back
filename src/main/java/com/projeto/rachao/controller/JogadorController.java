@@ -51,8 +51,7 @@ public class JogadorController {
     @PutMapping("/{id}")
     public ResponseEntity<JogadorDTO> atualizar(
             @PathVariable Long id,
-            @RequestBody Jogador registro
-    ) {
+            @RequestBody Jogador registro) {
         if (!repository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }

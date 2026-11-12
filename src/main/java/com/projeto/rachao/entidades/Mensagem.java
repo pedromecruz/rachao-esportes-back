@@ -33,15 +33,46 @@ public class Mensagem {
     @Column(name = "HORA")
     private LocalDateTime hora;
 
-    public Mensagem() {}
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public Jogador getJogador() { return jogador; }
-    public void setJogador(Jogador jogador) { this.jogador = jogador; }
-    public Chat getChat() { return chat; }
-    public void setChat(Chat chat) { this.chat = chat; }
-    public String getTextoMensagem() { return textoMensagem; }
-    public void setTextoMensagem(String textoMensagem) { this.textoMensagem = textoMensagem; }
-    public LocalDateTime getHora() { return hora; }
-    public void setHora(LocalDateTime hora) { this.hora = hora; }
+    public Mensagem() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Jogador getJogador() {
+        return jogador;
+    }
+
+    public void setJogador(Jogador jogador) {
+        this.jogador = jogador;
+    }
+
+    public Chat getChat() {
+        return chat;
+    }
+
+    public void setChat(Chat chat) {
+        this.chat = chat;
+    }
+
+    public String getTextoMensagem() {
+        return textoMensagem;
+    }
+
+    public void setTextoMensagem(String textoMensagem) {
+        this.textoMensagem = textoMensagem;
+    }
+
+    public LocalDateTime getHora() {
+        return hora;
+    }
+
+    public void setHora(LocalDateTime hora) {
+        this.hora = hora;
+    }
 }

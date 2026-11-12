@@ -53,8 +53,7 @@ public class HabilidadesController {
     @PutMapping("/{id}")
     public ResponseEntity<Habilidades> atualizar(
             @PathVariable Long id,
-            @RequestBody Habilidades registro
-    ) {
+            @RequestBody Habilidades registro) {
         if (!repository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }

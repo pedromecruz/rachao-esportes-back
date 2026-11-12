@@ -11,7 +11,7 @@ import jakarta.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "JOGADOR_TIME", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"ID_JOGADOR", "ID_TIME"})})
+        @UniqueConstraint(columnNames = { "ID_JOGADOR", "ID_TIME" }) })
 public class JogadorTime {
 
     @Id
@@ -26,11 +26,30 @@ public class JogadorTime {
     @JoinColumn(name = "ID_TIME", nullable = false)
     private Time time;
 
-    public JogadorTime() {}
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public Jogador getJogador() { return jogador; }
-    public void setJogador(Jogador jogador) { this.jogador = jogador; }
-    public Time getTime() { return time; }
-    public void setTime(Time time) { this.time = time; }
+    public JogadorTime() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Jogador getJogador() {
+        return jogador;
+    }
+
+    public void setJogador(Jogador jogador) {
+        this.jogador = jogador;
+    }
+
+    public Time getTime() {
+        return time;
+    }
+
+    public void setTime(Time time) {
+        this.time = time;
+    }
 }

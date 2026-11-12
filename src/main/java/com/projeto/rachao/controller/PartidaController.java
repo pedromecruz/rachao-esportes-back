@@ -53,8 +53,7 @@ public class PartidaController {
     @PutMapping("/{id}")
     public ResponseEntity<Partida> atualizar(
             @PathVariable Long id,
-            @RequestBody Partida registro
-    ) {
+            @RequestBody Partida registro) {
         if (!repository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }

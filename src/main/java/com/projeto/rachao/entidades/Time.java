@@ -17,10 +17,22 @@ public class Time {
     @Column(name = "NOME")
     private String nome;
 
-    public Time() {}
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public Jogo getJogo() { return jogo; }
-    public void setJogo(Jogo jogo) { this.jogo = jogo; }
-}
+    public Time() {
+    }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Jogo getJogo() {
+        return jogo;
+    }
+
+    public void setJogo(Jogo jogo) {
+        this.jogo = jogo;
+    }
+}

@@ -1,4 +1,5 @@
 package com.projeto.rachao.service;
+
 import com.projeto.rachao.controller.*;
 import com.projeto.rachao.entidades.*;
 import com.projeto.rachao.repository.*;
@@ -30,13 +31,11 @@ public class PartidaService {
 
         Jogador host = jogadorRepository
                 .findById(dados.jogadorHostId())
-                .orElseThrow(() ->
-                        new RuntimeException("Host não encontrado"));
+                .orElseThrow(() -> new RuntimeException("Host não encontrado"));
 
         Esportes esporte = esportesRepository
                 .findById(dados.esporteId())
-                .orElseThrow(() ->
-                        new RuntimeException("Esporte não encontrado"));
+                .orElseThrow(() -> new RuntimeException("Esporte não encontrado"));
 
         if (dados.qtdTimes() == null || dados.qtdTimes() < 2) {
             throw new IllegalArgumentException(

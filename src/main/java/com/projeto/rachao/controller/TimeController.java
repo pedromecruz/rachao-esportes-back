@@ -53,8 +53,7 @@ public class TimeController {
     @PutMapping("/{id}")
     public ResponseEntity<Time> atualizar(
             @PathVariable Long id,
-            @RequestBody Time registro
-    ) {
+            @RequestBody Time registro) {
         if (!repository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }

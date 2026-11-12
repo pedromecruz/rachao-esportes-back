@@ -53,8 +53,7 @@ public class DesempenhoController {
     @PutMapping("/{id}")
     public ResponseEntity<Desempenho> atualizar(
             @PathVariable Long id,
-            @RequestBody Desempenho registro
-    ) {
+            @RequestBody Desempenho registro) {
         if (!repository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }

@@ -7,7 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "Jogador")
@@ -20,19 +20,18 @@ public class Jogador {
     @Column(nullable = false)
     private String nome;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String cpf;
-
-    private String cep;
-    
-    @Column(nullable = false)
-    private Date dataNasc;
 
     @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
     private String senha;
+
+    private LocalDate dataNasc;
+
+    private String cep;
 
     private String descricao;
 
@@ -77,11 +76,11 @@ public class Jogador {
         this.cep = cep;
     }
 
-    public Date getDataNasc() {
+    public LocalDate getDataNasc() {
         return dataNasc;
     }
 
-    public void setDataNasc(Date dataNasc) {
+    public void setDataNasc(LocalDate dataNasc) {
         this.dataNasc = dataNasc;
     }
 

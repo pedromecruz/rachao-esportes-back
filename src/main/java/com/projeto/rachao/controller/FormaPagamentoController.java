@@ -53,8 +53,7 @@ public class FormaPagamentoController {
     @PutMapping("/{id}")
     public ResponseEntity<FormaPagamento> atualizar(
             @PathVariable Long id,
-            @RequestBody FormaPagamento registro
-    ) {
+            @RequestBody FormaPagamento registro) {
         if (!repository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }

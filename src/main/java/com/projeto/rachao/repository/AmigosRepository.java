@@ -15,5 +15,5 @@ public interface AmigosRepository extends JpaRepository<Amigos, Long> {
 
     // Método para buscar a solicitação específica na hora de aceitar ou recusar
     Optional<Amigos> findByJogadorAndAmigo(Jogador jogador, Jogador amigo);
-    
+
 }
