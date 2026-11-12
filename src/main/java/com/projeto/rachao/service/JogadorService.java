@@ -19,24 +19,19 @@ public class JogadorService {
     private final JogadorRepository jogadorRepository;
     private final PasswordEncoder passwordEncoder;
 
-    // Injeção de dependências pelo construtor.
-    // O Spring fornece automaticamente o Repository e o PasswordEncoder.
+    // injecao de dependencias construtor
     public JogadorService(JogadorRepository jogadorRepository,
             PasswordEncoder passwordEncoder) {
         this.jogadorRepository = jogadorRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
-    // ============================
-    // VALIDAÇÕES DO CADASTRO
-    // ============================
-
-    // Verifica se o e-mail possui um formato básico válido.
+    // verificacao do e-mail, se tem o formato padrão de email
     private boolean isEmailValido(String email) {
         return email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$");
     }
 
-    // Verifica se os campos obrigatórios foram preenchidos.
+    // verifica se os campos estão preenchidos
     private void validarCamposObrigatorios(JogadorCadastroDTO dados) {
 
         if (dados == null) {
@@ -44,8 +39,8 @@ public class JogadorService {
                     "Os dados do cadastro são obrigatórios.");
         }
 
-        // trim() remove espaços no começo e no final.
-        // isEmpty() verifica se a String ficou vazia.
+        // trim() remove espaços no começo e no final // isEmpty() verifica se a String
+        // ficou vazia.
         if (dados.getNome() == null || dados.getNome().trim().isEmpty()) {
             throw new IllegalArgumentException("O nome é obrigatório.");
         }
@@ -90,12 +85,8 @@ public class JogadorService {
         }
     }
 
-    // ============================
-    // VALIDAÇÃO DO CPF
-    // ============================
-
+   
     // Verifica os dois dígitos verificadores do CPF.
-    // Esse método será utilizado na atualização do perfil.
     private boolean isCpfValido(String cpf) {
 
         if (cpf == null) {
@@ -104,8 +95,7 @@ public class JogadorService {
 
         cpf = cpf.replaceAll("[^0-9]", "");
 
-        // O CPF precisa ter 11 dígitos e não pode conter
-        // todos os números iguais.
+        // O CPF precisa ter 11 dígitos e não pode conter todos os números iguais.
         if (cpf.length() != 11 || cpf.matches("(\\d)\\1{10}")) {
             return false;
         }
@@ -139,63 +129,52 @@ public class JogadorService {
                 && digito2 == (cpf.charAt(10) - '0');
     }
 
-    // ============================
     // CADASTRAR JOGADOR
-    // ============================
-
     public JogadorDTO cadastrar(JogadorCadastroDTO dto) {
 
-        // 1. Verifica os campos obrigatórios.
+        // verifica os campos obrigatorios
         validarCamposObrigatorios(dto);
 
-        // 2. Normaliza o e-mail para evitar diferenças
-        // entre letras maiúsculas e minúsculas.
+        //padroniza o e-mail para nao ter maisculas
         String email = dto.getEmail().trim().toLowerCase();
 
-        // 3. Valida o formato do e-mail.
+        //valida formato do email
         if (!isEmailValido(email)) {
             throw new IllegalArgumentException("E-mail inválido.");
         }
 
-        // 4. Valida o tamanho mínimo da senha.
+        // verifica tamanho minimo da senha
         if (dto.getSenha().length() < 8) {
             throw new IllegalArgumentException(
                     "A senha deve ter no mínimo 8 caracteres.");
         }
 
-        // 5. Verifica se o jogador é maior de idade.
+       //verifica se é maior de idade
         validarMaioridade(dto.getDataNascimento());
 
-        // 6. Impede o cadastro de e-mails duplicados.
+        //impede cadastrar o mesmo email
         if (jogadorRepository.existsByEmail(email)) {
             throw new IllegalArgumentException(
                     "E-mail já cadastrado.");
         }
 
-        // 7. Cria uma nova entidade Jogador.
+        //criando nova entidade jogador
         Jogador jogador = new Jogador();
 
         jogador.setNome(dto.getNome().trim());
         jogador.setEmail(email);
         jogador.setDataNasc(dto.getDataNascimento());
 
-        // A senha nunca deve ser salva em texto puro.
+    
         // O PasswordEncoder transforma a senha em um hash.
         jogador.setSenha(passwordEncoder.encode(dto.getSenha()));
 
-        // O CPF não é preenchido no cadastro.
-        // Será informado posteriormente na tela de perfil.
-
-        // 8. Salva o jogador no banco de dados.
+        // salvar o jogador no banco
         Jogador salvo = jogadorRepository.save(jogador);
 
-        // 9. Retorna os dados permitidos pelo JogadorDTO.
+       // retorna somente oq é permitido no DTO
         return converterParaDTO(salvo);
     }
-
-    // ============================
-    // ATUALIZAR PERFIL
-    // ============================
 
     public JogadorDTO atualizarPerfil(Long id, JogadorPerfilDTO dto) {
 
@@ -204,14 +183,12 @@ public class JogadorService {
                     "Os dados do perfil são obrigatórios.");
         }
 
-        // Busca o jogador pelo ID.
-        // Se não encontrar, lança uma exceção.
+        // buscando pelo id
         Jogador jogador = jogadorRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException(
                         "Jogador não encontrado."));
 
-        // O CPF é opcional na atualização.
-        // Se for informado, será validado.
+        // verificacao pra ver se foi inserido cpf
         if (dto.getCpf() != null && !dto.getCpf().isBlank()) {
 
             // Remove pontos, traços e outros caracteres.
@@ -234,7 +211,7 @@ public class JogadorService {
             jogador.setCpf(cpf);
         }
 
-        // Valida o CEP, quando informado.
+        // validacao de cep
         if (dto.getCep() != null) {
 
             String cep = dto.getCep().replaceAll("[^0-9]", "");
@@ -247,7 +224,7 @@ public class JogadorService {
             jogador.setCep(cep);
         }
 
-        // Atualiza a descrição, quando informada.
+        // atualiza a descricao caso seja informada
         if (dto.getDescricao() != null) {
 
             if (dto.getDescricao().length() > 500) {
@@ -258,7 +235,7 @@ public class JogadorService {
             jogador.setDescricao(dto.getDescricao());
         }
 
-        // Atualiza a altura, quando informada.
+        // atualiza a altura caso seja informada
         if (dto.getAltura() != null) {
 
             // Considerando altura em metros.
@@ -276,10 +253,7 @@ public class JogadorService {
         return converterParaDTO(salvo);
     }
 
-    // ============================
     // BUSCAR JOGADOR POR ID
-    // ============================
-
     public JogadorDTO buscarPorId(Long id) {
 
         Jogador jogador = jogadorRepository.findById(id)
@@ -289,12 +263,8 @@ public class JogadorService {
         return converterParaDTO(jogador);
     }
 
-    // ============================
-    // CONVERTER ENTIDADE PARA DTO
-    // ============================
-
-    // Centraliza a conversão para evitar repetição de código.
-    // Também impede que a senha seja retornada na resposta.
+    // metodo para converter em dto, para não precisar repetir no código varias
+    // vezes
     private JogadorDTO converterParaDTO(Jogador jogador) {
 
         JogadorDTO dto = new JogadorDTO();
