@@ -1,87 +1,69 @@
+
 package com.projeto.rachao.controller;
 
-import com.projeto.rachao.entidades.Jogador;
-import com.projeto.rachao.dto.JogadorDTO;
-import com.projeto.rachao.repository.JogadorRepository;
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import com.projeto.rachao.dto.JogadorCadastroDTO;
+import com.projeto.rachao.dto.JogadorDTO;
+import com.projeto.rachao.dto.JogadorPerfilDTO;
+import com.projeto.rachao.service.JogadorService;
 
 @RestController
 @RequestMapping("/api/jogadores")
 @CrossOrigin(origins = "http://localhost:4200")
 public class JogadorController {
 
-    // Repository usado para consultar e salvar jogadores no banco.
-    private final JogadorRepository repository;
+    private final JogadorService jogadorService;
 
-    // Componente usado para criptografar as senhas antes do cadastro.
-    private final PasswordEncoder passwordEncoder;
-
-    // O Spring injeta o repository e o codificador de senha no controller.
-    public JogadorController(JogadorRepository repository, PasswordEncoder passwordEncoder) {
-        this.repository = repository;
-        this.passwordEncoder = passwordEncoder;
+    // Injecao de dependencia pelo construtor
+    public JogadorController(JogadorService jogadorService) {
+        this.jogadorService = jogadorService;
     }
-
-    // Lista os jogadores sem devolver a senha.
+    
+    // LISTAR JOGADORES
     @GetMapping
-    public List<JogadorDTO> listar() {
-        return repository.findAll().stream().map(this::converter).toList();
+    public ResponseEntity<List<JogadorDTO>> listar() {
+
+        return ResponseEntity.ok(jogadorService.listar());
     }
 
-    // Busca um jogador pelo identificador.
+    // BUSCAR JOGADOR POR ID
     @GetMapping("/{id}")
     public ResponseEntity<JogadorDTO> buscar(@PathVariable Long id) {
-        return repository.findById(id)
-                .map(jogador -> ResponseEntity.ok(converter(jogador)))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+
+        return ResponseEntity.ok(jogadorService.buscarPorId(id));
     }
 
-    // Cria um jogador e armazena a senha criptografada.
+    // CADASTRAR JOGADOR
     @PostMapping
-    public ResponseEntity<JogadorDTO> criar(@RequestBody Jogador registro) {
-        registro.setSenha(passwordEncoder.encode(registro.getSenha()));
-        return ResponseEntity.status(201).body(converter(repository.save(registro)));
+    public ResponseEntity<JogadorDTO> cadastrar(
+            @RequestBody JogadorCadastroDTO dto) {
+
+        JogadorDTO jogador = jogadorService.cadastrar(dto);
+
+        return ResponseEntity.status(201).body(jogador);
     }
 
-    // Atualiza os dados de um jogador existente.
-    @PutMapping("/{id}")
-    public ResponseEntity<JogadorDTO> atualizar(
+    // ATUALIZAR PERFIL
+    @PutMapping("/{id}/perfil")
+    public ResponseEntity<JogadorDTO> atualizarPerfil(
             @PathVariable Long id,
-            @RequestBody Jogador registro) {
-        if (!repository.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
+            @RequestBody JogadorPerfilDTO dto) {
 
-        registro.setId(id);
-        registro.setSenha(passwordEncoder.encode(registro.getSenha()));
-        return ResponseEntity.ok(converter(repository.save(registro)));
+        JogadorDTO jogador = jogadorService.atualizarPerfil(id, dto);
+
+        return ResponseEntity.ok(jogador);
     }
 
-    // Exclui um jogador pelo identificador.
+    // EXCLUIR JOGADOR
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> apagar(@PathVariable Long id) {
-        if (!repository.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<Void> excluir(@PathVariable Long id) {
 
-        repository.deleteById(id);
+        jogadorService.excluir(id);
+
         return ResponseEntity.noContent().build();
-    }
-
-    private JogadorDTO converter(Jogador jogador) {
-        JogadorDTO dto = new JogadorDTO();
-
-        // Copia apenas os dados públicos para evitar devolver a senha na API.
-        dto.setId(jogador.getId());
-        dto.setNome(jogador.getNome());
-        dto.setEmail(jogador.getEmail());
-        dto.setCep(jogador.getCep());
-        dto.setDataNascimento(jogador.getDataNasc());
-        dto.setDescricao(jogador.getDescricao());
-        return dto;
     }
 }

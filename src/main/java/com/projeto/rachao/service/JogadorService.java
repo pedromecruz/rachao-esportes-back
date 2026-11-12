@@ -3,6 +3,7 @@ package com.projeto.rachao.service;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.List;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -85,7 +86,6 @@ public class JogadorService {
         }
     }
 
-   
     // Verifica os dois dígitos verificadores do CPF.
     private boolean isCpfValido(String cpf) {
 
@@ -135,10 +135,10 @@ public class JogadorService {
         // verifica os campos obrigatorios
         validarCamposObrigatorios(dto);
 
-        //padroniza o e-mail para nao ter maisculas
+        // padroniza o e-mail para nao ter maisculas
         String email = dto.getEmail().trim().toLowerCase();
 
-        //valida formato do email
+        // valida formato do email
         if (!isEmailValido(email)) {
             throw new IllegalArgumentException("E-mail inválido.");
         }
@@ -149,30 +149,29 @@ public class JogadorService {
                     "A senha deve ter no mínimo 8 caracteres.");
         }
 
-       //verifica se é maior de idade
+        // verifica se é maior de idade
         validarMaioridade(dto.getDataNascimento());
 
-        //impede cadastrar o mesmo email
+        // impede cadastrar o mesmo email
         if (jogadorRepository.existsByEmail(email)) {
             throw new IllegalArgumentException(
                     "E-mail já cadastrado.");
         }
 
-        //criando nova entidade jogador
+        // criando nova entidade jogador
         Jogador jogador = new Jogador();
 
         jogador.setNome(dto.getNome().trim());
         jogador.setEmail(email);
         jogador.setDataNasc(dto.getDataNascimento());
 
-    
         // O PasswordEncoder transforma a senha em um hash.
         jogador.setSenha(passwordEncoder.encode(dto.getSenha()));
 
         // salvar o jogador no banco
         Jogador salvo = jogadorRepository.save(jogador);
 
-       // retorna somente oq é permitido no DTO
+        // retorna somente oq é permitido no DTO
         return converterParaDTO(salvo);
     }
 
@@ -261,6 +260,25 @@ public class JogadorService {
                         "Jogador não encontrado."));
 
         return converterParaDTO(jogador);
+    }
+
+    // metodo para listar todos jogadores
+    public List<JogadorDTO> listar() {
+
+        return jogadorRepository.findAll()
+                .stream()
+                .map(this::converterParaDTO)
+                .toList();
+    }
+
+    // metodo para excuir jogador
+    public void excluir(Long id) {
+
+        Jogador jogador = jogadorRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Jogador não encontrado."));
+
+        jogadorRepository.delete(jogador);
     }
 
     // metodo para converter em dto, para não precisar repetir no código varias

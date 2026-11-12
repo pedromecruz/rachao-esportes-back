@@ -1,3 +1,4 @@
+
 package com.projeto.rachao.entidades;
 
 import jakarta.persistence.*;
@@ -6,13 +7,36 @@ import jakarta.persistence.*;
 @Table(name = "ESPORTES")
 public class Esportes {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "ESPORTE")
-    private Esportes esporte;
+    private EsportesLista esporte;
 
-    public static enum EsportesLista {
+    public enum EsportesLista {
         BASQUETE,
         VOLEI,
         FUTEBOL
+    }
+
+    public Esportes() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public EsportesLista getEsporte() {
+        return esporte;
+    }
+
+    public void setEsporte(EsportesLista esporte) {
+        this.esporte = esporte;
     }
 }
