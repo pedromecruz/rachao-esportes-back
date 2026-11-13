@@ -1,0 +1,208 @@
+<header class="cadastro-header">
+  <a class="brand" routerLink="/" aria-label="Voltar para o início">
+    <img src="/images/LogoRachaoEsportes.png" alt="Logo Rachão Esportes" />
+  </a>
+
+  <div class="header-message">
+    <p>
+      MAIS QUE ESPORTE, É<br />
+      CONEXÃO.
+    </p>
+    <span class="message-line"></span>
+  </div>
+</header>
+
+<main class="cadastro-main">
+  <section class="cadastro-intro">
+    <h1>
+      FAÇA<br />
+      PARTE<br />
+      <span class="highlight">DO RACHÃO!</span>
+    </h1>
+
+    <p class="intro-description">
+      Crie sua conta e encontre partidas, jogadores e quadras perto de você. O esporte te conecta!
+    </p>
+
+    <p class="intro-slogan">
+      JUNTOS<br />
+      POR MAIS<br />
+      JOGOS.
+    </p>
+  </section>
+
+  <section class="cadastro-card" aria-labelledby="cadastro-title">
+    <h2 id="cadastro-title">Criar conta</h2>
+
+    <p class="cadastro-description">Preencha seus dados para começar no Rachão.</p>
+
+    <form class="cadastro-form" [formGroup]="cadastroForm" (ngSubmit)="onSubmit()" novalidate>
+      <div class="form-field">
+        <label class="visually-hidden" for="nome"> Nome completo </label>
+
+        <input
+          id="nome"
+          name="nome"
+          type="text"
+          placeholder="Nome completo"
+          autocomplete="name"
+          formControlName="nome"
+        />
+
+        <small
+          class="error-message"
+          [hidden]="!submitted || !cadastroForm.controls.nome.hasError('required')"
+        >
+          Informe seu nome completo.
+        </small>
+
+        <small
+          class="error-message"
+          [hidden]="
+            !submitted ||
+            cadastroForm.controls.nome.hasError('required') ||
+            !cadastroForm.controls.nome.hasError('minlength')
+          "
+        >
+          Informe pelo menos 3 caracteres.
+        </small>
+      </div>
+
+      <div class="form-field">
+        <label class="visually-hidden" for="email"> E-mail </label>
+
+        <input
+          id="email"
+          name="email"
+          type="email"
+          placeholder="E-mail"
+          autocomplete="email"
+          formControlName="email"
+        />
+
+        <small
+          class="error-message"
+          [hidden]="!submitted || !cadastroForm.controls.email.hasError('required')"
+        >
+          Informe seu e-mail.
+        </small>
+
+        <small
+          class="error-message"
+          [hidden]="
+            !submitted ||
+            cadastroForm.controls.email.hasError('required') ||
+            !cadastroForm.controls.email.hasError('email')
+          "
+        >
+          Digite um e-mail válido.
+        </small>
+      </div>
+
+      <div class="form-field">
+        <label class="visually-hidden" for="senha"> Senha </label>
+
+        <div class="password-input-wrap">
+          <input
+            id="senha"
+            name="senha"
+            [type]="mostrarSenha ? 'text' : 'password'"
+            placeholder="Senha"
+            autocomplete="new-password"
+            formControlName="senha"
+          />
+
+          <button
+            type="button"
+            class="toggle-password"
+            (click)="mostrarSenha = !mostrarSenha"
+            [attr.aria-label]="mostrarSenha ? 'Ocultar senha' : 'Mostrar senha'"
+          >
+            {{ mostrarSenha ? 'Ocultar' : 'Mostrar' }}
+          </button>
+        </div>
+
+        <small
+          class="error-message"
+          [hidden]="!submitted || !cadastroForm.controls.senha.hasError('required')"
+        >
+          Informe sua senha.
+        </small>
+
+        <small
+          class="error-message"
+          [hidden]="
+            !submitted ||
+            cadastroForm.controls.senha.hasError('required') ||
+            !cadastroForm.controls.senha.hasError('minlength')
+          "
+        >
+          A senha deve ter pelo menos 8 caracteres.
+        </small>
+      </div>
+      <div class="form-field">
+        <label class="visually-hidden" for="confirmarSenha"> Confirmar senha </label>
+
+        <div class="password-input-wrap">
+          <input
+            id="confirmarSenha"
+            name="confirmarSenha"
+            [type]="mostrarConfirmacaoSenha ? 'text' : 'password'"
+            placeholder="Confirmar senha"
+            autocomplete="new-password"
+            formControlName="confirmarSenha"
+          />
+
+          <button
+            type="button"
+            class="toggle-password"
+            (click)="mostrarConfirmacaoSenha = !mostrarConfirmacaoSenha"
+            [attr.aria-label]="mostrarConfirmacaoSenha ? 'Ocultar senha' : 'Mostrar senha'"
+          >
+            {{ mostrarConfirmacaoSenha ? 'Ocultar' : 'Mostrar' }}
+          </button>
+        </div>
+
+        <small
+          class="error-message"
+          [hidden]="!submitted || !cadastroForm.controls.confirmarSenha.hasError('required')"
+        >
+          Confirme sua senha.
+        </small>
+
+        <small
+          class="error-message"
+          [hidden]="
+            !submitted ||
+            cadastroForm.controls.confirmarSenha.hasError('required') ||
+            !cadastroForm.hasError('senhasDiferentes')
+          "
+        >
+          As senhas não coincidem.
+        </small>
+      </div>
+
+      <div class="form-field">
+        <label for="nascimento">Data de nascimento (18 anos ou mais)</label
+        ><input id="nascimento" type="date" formControlName="dataNascimento" required /><small
+          class="error-message"
+          [hidden]="!submitted || cadastroForm.controls.dataNascimento.valid"
+          >Informe a data de nascimento.</small
+        >
+      </div>
+      <button type="submit" class="cadastro-button" [disabled]="busy">Cadastrar</button>
+
+      <p role="alert" class="error-message">{{ erro }}</p>
+    </form>
+
+    <div class="cadastro-divider"></div>
+
+    <p class="login-message">
+      Já tem uma conta?
+
+      <a routerLink="/login">Entrar</a>
+    </p>
+  </section>
+</main>
+
+<app-footer />

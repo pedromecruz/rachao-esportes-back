@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&display=swap');
+
+/*
+Configurações pra tirar aquele recuo que o navegador deixa normalmente, fica muito estranho kkkk
+*/
+
+*{
+    box-sizing: border-box;
+    margin: 0px;
+    padding: 0px;
+}
+
+html,
+body {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
+button,
+input,
+textarea,
+select {
+    font-family: inherit;
+}button { cursor: pointer; }
+button:disabled { opacity: .55; cursor: wait; }
+[hidden] { display: none !important; }
+.error-message { color: #b42318; margin: 12px 0; }
+.filters { display:flex; flex-wrap:wrap; gap:16px; margin:24px 0; }
+.filters label { display:grid; gap:8px; }
+.filters input,.filters select { padding:12px; border:1px solid #aaa; border-radius:8px; }
+.match-actions { display:flex; flex-direction:column; gap:10px; margin-top:16px; }
+.detail-panel { background:white; padding:24px; border:1px solid #ddd; border-radius:12px; margin:24px 0; }
+.detail-panel ul { padding:24px; }
+.detail-panel button { margin:8px; padding:12px; }
+@media(max-width:700px) { .profile-page { margin:0; } }

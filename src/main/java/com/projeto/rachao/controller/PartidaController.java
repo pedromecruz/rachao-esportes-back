@@ -1,75 +1,54 @@
 package com.projeto.rachao.controller;
 
-import com.projeto.rachao.entidades.Partida;
-import com.projeto.rachao.repository.PartidaRepository;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import com.projeto.rachao.dto.PartidaDTO;
+import com.projeto.rachao.dto.PartidaRequest;
+import com.projeto.rachao.service.PartidaService;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import com.projeto.rachao.config.AuthContext;
 
 @RestController
 @RequestMapping("/api/partidas")
 @CrossOrigin(origins = "http://localhost:4200")
-/** Endpoints CRUD das partidas. */
 public class PartidaController {
+    private final PartidaService service;
 
-    // Repository responsável pelo acesso às partidas no banco.
-    private final PartidaRepository repository;
-
-    // O Spring injeta automaticamente o repository neste controller.
-    public PartidaController(PartidaRepository repository) {
-        this.repository = repository;
+    public PartidaController(PartidaService service) {
+        this.service = service;
     }
 
-    // Retorna todas as partidas cadastradas.
     @GetMapping
-    public List<Partida> listar() {
-        return repository.findAll();
+    public List<PartidaDTO> listar() {
+        return service.listar();
     }
 
-    // Procura uma partida pelo seu ID.
     @GetMapping("/{id}")
-    public ResponseEntity<Partida> buscar(@PathVariable Long id) {
-        return repository.findById(id)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    public PartidaDTO buscar(@PathVariable Long id) {
+        return service.buscar(id);
     }
 
-    // Cadastra uma nova partida.
     @PostMapping
-    public ResponseEntity<Partida> criar(@RequestBody Partida registro) {
-        return ResponseEntity.status(201).body(repository.save(registro));
+    public ResponseEntity<PartidaDTO> criar(@RequestBody PartidaRequest dados, HttpServletRequest request) {
+        return ResponseEntity.status(201).body(service.criarPartida(dados, AuthContext.id(request)));
     }
 
-    // Atualiza uma partida existente.
     @PutMapping("/{id}")
-    public ResponseEntity<Partida> atualizar(
-            @PathVariable Long id,
-            @RequestBody Partida registro) {
-        if (!repository.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
-
-        registro.setId(id);
-        return ResponseEntity.ok(repository.save(registro));
+    public PartidaDTO atualizar(@PathVariable Long id, @RequestBody PartidaRequest dados,
+            HttpServletRequest request) {
+        return service.atualizar(id, dados, AuthContext.id(request));
     }
 
-    // Exclui uma partida pelo ID.
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> apagar(@PathVariable Long id) {
-        if (!repository.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
+    @PostMapping("/{id}/cancelar")
+    public PartidaDTO cancelar(@PathVariable Long id, HttpServletRequest request) {
+        return service.cancelar(id, AuthContext.id(request));
+    }
 
-        repository.deleteById(id);
+    /** DELETE mantém o registro e marca a partida como CANCELADA. */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> apagar(@PathVariable Long id, HttpServletRequest request) {
+        service.cancelar(id, AuthContext.id(request));
         return ResponseEntity.noContent().build();
     }
 }

@@ -11,29 +11,43 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "DESEMPENHO", uniqueConstraints = { @UniqueConstraint(columnNames = { "ID_JOGADOR", "ID_JOGO" }) })
+@Table(
+    name = "DESEMPENHO",
+    uniqueConstraints = {
+        @UniqueConstraint(
+            columnNames = {"ID_JOGADOR", "ID_PARTIDA"}
+        )
+    }
+)
 public class Desempenho {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // JOGADOR
     @ManyToOne(optional = false)
     @JoinColumn(name = "ID_JOGADOR", nullable = false)
     private Jogador jogador;
 
+    // PARTIDA
     @ManyToOne(optional = false)
-    @JoinColumn(name = "ID_JOGO", nullable = false)
-    private Jogo jogo;
+    @JoinColumn(name = "ID_PARTIDA", nullable = false)
+    private Partida partida;
 
+    // NOTA DO JOGADOR
     @Column(name = "NOTA")
     private Double nota;
 
+    // PONTOS, GOLS OU CESTAS
     @Column(name = "PGC")
-    private Integer Pgc; // Quantidade de Pontos, Gols ou Cestas
+    private Integer pgc;
 
+    // CONSTRUTOR VAZIO
     public Desempenho() {
     }
+
+    // GETTERS E SETTERS
 
     public Long getId() {
         return id;
@@ -51,12 +65,12 @@ public class Desempenho {
         this.jogador = jogador;
     }
 
-    public Jogo getJogo() {
-        return jogo;
+    public Partida getPartida() {
+        return partida;
     }
 
-    public void setJogo(Jogo jogo) {
-        this.jogo = jogo;
+    public void setPartida(Partida partida) {
+        this.partida = partida;
     }
 
     public Double getNota() {
@@ -68,10 +82,10 @@ public class Desempenho {
     }
 
     public Integer getPgc() {
-        return Pgc;
+        return pgc;
     }
 
-    public void setPgc(Integer Pgc) {
-        this.Pgc = Pgc;
+    public void setPgc(Integer pgc) {
+        this.pgc = pgc;
     }
 }

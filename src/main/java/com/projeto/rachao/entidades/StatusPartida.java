@@ -1,19 +1,13 @@
 package com.projeto.rachao.entidades;
 
-import jakarta.persistence.*;
-
-public class StatusPartida {
-
-    public StatusPartida() {
-    }
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "STATUS")
-    private StatusPartida status;
+/** Status do ciclo de vida de uma partida. */
+public final class StatusPartida {
+    private StatusPartida() {}
 
     public enum StatusAtual {
         PENDENTE,
         EM_ANDAMENTO,
-        CONCLUIDA
+        CONCLUIDA,
+        CANCELADA
     }
 }

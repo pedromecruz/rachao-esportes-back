@@ -1,5 +1,6 @@
 package com.projeto.rachao.entidades;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -60,6 +61,7 @@ public class Jogador {
         this.nome = nome;
     }
 
+    @JsonIgnore
     public String getCpf() {
         return cpf;
     }
@@ -76,6 +78,7 @@ public class Jogador {
         this.cep = cep;
     }
 
+    @JsonIgnore
     public LocalDate getDataNasc() {
         return dataNasc;
     }
@@ -92,6 +95,7 @@ public class Jogador {
         this.email = email;
     }
 
+    @JsonIgnore
     public String getSenha() {
         return senha;
     }

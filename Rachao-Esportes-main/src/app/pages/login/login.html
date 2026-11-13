@@ -1,0 +1,133 @@
+<p role="status" [hidden]="!cadastrado">Cadastro concluído! Entre com seu e-mail e senha.</p>
+<header class="login-header">
+  <a class="brand" routerLink="/" aria-label="Voltar para a página inicial">
+    <img src="/images/LogoRachaoEsportes.png" alt="Logo Rachão Esportes" />
+  </a>
+
+  <div class="header-message">
+    <p>
+      MAIS QUE ESPORTE, É<br />
+      CONEXÃO.
+    </p>
+    <span class="message-line"></span>
+  </div>
+</header>
+
+<main class="login-main">
+  <section class="login-intro">
+    <h1>
+      SEU<br />
+      ESPORTE,<br />
+      <span class="highlight">SUA GALERA!</span>
+    </h1>
+
+    <p class="intro-description">
+      Encontre partidas, conheça novas pessoas e viva o esporte de um jeito mais simples, rápido e
+      seguro.
+    </p>
+
+    <div class="login-benefits">
+      <article class="benefit">
+        <span class="benefit-icon" aria-hidden="true">👥</span>
+        <h2>CONECTE-SE</h2>
+        <p>Com jogadores da sua região.</p>
+      </article>
+
+      <article class="benefit">
+        <span class="benefit-icon" aria-hidden="true">🗓️</span>
+        <h2>RESERVE</h2>
+        <p>Quadras e horários.</p>
+      </article>
+
+      <article class="benefit">
+        <span class="benefit-icon" aria-hidden="true">🏆</span>
+        <h2>PARTICIPE</h2>
+        <p>De campeonatos e eventos.</p>
+      </article>
+    </div>
+
+    <p class="intro-slogan">
+      JUNTOS<br />
+      POR MAIS<br />
+      JOGOS.
+    </p>
+  </section>
+
+  <section class="login-card" aria-labelledby="login-title">
+    <h2 id="login-title">Entrar</h2>
+
+    <p class="login-description">Acesse sua conta e continue no Rachão.</p>
+
+    <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-field">
+        <label class="visually-hidden" for="username"> E-mail </label>
+
+        <input
+          id="email"
+          name="email"
+          type="email"
+          placeholder="E-mail"
+          autocomplete="email"
+          formControlName="email"
+        />
+
+        <small
+          class="error-message"
+          [hidden]="!submitted || !loginForm.controls.email.hasError('required')"
+        >
+          Informe seu e-mail.
+        </small>
+
+        <small
+          class="error-message"
+          [hidden]="
+            !submitted ||
+            loginForm.controls.email.hasError('required') ||
+            !loginForm.controls.email.hasError('email')
+          "
+        >
+          Digite um e-mail válido.
+        </small>
+      </div>
+
+      <div class="form-field">
+        <label class="visually-hidden" for="password"> Senha </label>
+
+        <div class="password-input-wrap">
+          <input
+            id="password"
+            name="password"
+            [type]="mostrarSenha ? 'text' : 'password'"
+            placeholder="Senha"
+            autocomplete="current-password"
+            formControlName="password"
+          />
+
+          <button
+            type="button"
+            class="toggle-password"
+            (click)="mostrarSenha = !mostrarSenha"
+            [attr.aria-label]="mostrarSenha ? 'Ocultar senha' : 'Mostrar senha'"
+          >
+            {{ mostrarSenha ? 'Ocultar' : 'Mostrar' }}
+          </button>
+        </div>
+
+        <small class="error-message" [hidden]="!submitted || loginForm.controls.password.valid">
+          Informe sua senha.
+        </small>
+      </div>
+
+      <p role="alert" class="error-message">{{ erro }}</p>
+      <button type="submit" class="login-button" [disabled]="busy">ENTRAR</button>
+    </form>
+
+    <div class="login-divider"></div>
+
+    <p class="register-message">
+      Ainda não tem conta?
+
+      <a routerLink="/cadastro"> Cadastre-se </a>
+    </p>
+  </section>
+</main>

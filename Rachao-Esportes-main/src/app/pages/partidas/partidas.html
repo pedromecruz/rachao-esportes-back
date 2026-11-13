@@ -1,0 +1,119 @@
+<div class="dashboard-container">
+  <aside class="sidebar">
+    <a routerLink="/" class="sidebar-logo"
+      ><img src="/images/LogoRachaoEsportes.png" alt="Rachão Esportes"
+    /></a>
+    <nav class="sidebar-nav">
+      <a routerLink="/partidas" class="sidebar-link" [class.active]="!somenteMinhas"
+        >Encontrar partidas</a
+      ><a routerLink="/minhas-partidas" class="sidebar-link" [class.active]="somenteMinhas"
+        >Minhas partidas</a
+      ><a routerLink="/perfil" class="sidebar-link">Perfil</a
+      ><button class="sidebar-link" (click)="logout()" [disabled]="busy">Sair</button>
+    </nav>
+  </aside>
+  <main class="main-content">
+    <header class="dashboard-header">
+      <div class="welcome-message">
+        <h1>Olá, {{ auth.sessao()?.nome }}!</h1>
+        <p>Pronto para o próximo rachão?</p>
+      </div>
+    </header>
+    <section class="hero-banner">
+      <div class="hero-banner-content">
+        <h2>{{ somenteMinhas ? 'MINHAS PARTIDAS' : 'ENCONTRE SEU PRÓXIMO RACHÃO' }}</h2>
+        <p>Jogue, conheça pessoas e mantenha o esporte na rotina.</p>
+        <button class="search-button" (click)="abrirModal()">Criar partida</button>
+      </div>
+      <div class="hero-banner-image">
+        <img src="/images/Imagem1-fut.png" alt="Bola em um campo de futebol" />
+      </div>
+    </section>
+    <section class="featured-matches">
+      <div class="section-header">
+        <h2>{{ somenteMinhas ? 'Partidas em que você participa' : 'Todas as partidas' }}</h2>
+        <button (click)="carregar()" [disabled]="loading || busy">Atualizar</button>
+      </div>
+      <div class="filters">
+        <label>Local ou organizador<input [(ngModel)]="busca" placeholder="Buscar partida" /></label
+        ><label
+          >Esporte<select [(ngModel)]="esporte">
+            <option value="">Todos</option>
+            <option>FUTEBOL</option>
+            <option>BASQUETE</option>
+            <option>VOLEI</option>
+          </select></label
+        >
+      </div>
+      <p role="alert" class="error-message">{{ erro }}</p>
+      <p role="status">{{ sucesso }}</p>
+      @if (loading) {
+        <p role="status">Carregando partidas…</p>
+      } @else if (erro) {
+        <button (click)="carregar()">Tentar novamente</button>
+      } @else {
+        <div class="matches-container">
+          @for (p of filtradas; track p.id) {
+            <article class="match-card">
+              <span class="match-sport">{{ p.esporte }}</span
+              ><span class="match-status">{{ p.status }} · {{ p.vagasRestantes }} vagas</span>
+              <h3>{{ p.local }}</h3>
+              <p>{{ p.dataHora | date: 'dd/MM/yyyy HH:mm' }} (São Paulo)</p>
+              <p>Organizador: {{ p.jogadorHostNome }}</p>
+              <p>
+                {{ p.inscritos }}/{{ p.qtdTimes * p.qtdJogadoresTime }} jogadores ·
+                {{ p.qtdTimes }} times
+              </p>
+              <div class="match-actions">
+                <button (click)="ver(p)" [disabled]="busy">Ver participantes</button>
+                @if (host(p)) {
+                  @if (p.status === 'PENDENTE') {
+                    <button (click)="abrirModal(p)" [disabled]="busy">Editar</button
+                    ><button (click)="confirmacao = p" [disabled]="busy">Cancelar partida</button>
+                  }
+                } @else if (inscrito(p) && p.status === 'PENDENTE') {
+                  <button (click)="sair(p)" [disabled]="busy">Sair da partida</button>
+                } @else if (!inscrito(p) && futura(p)) {
+                  <button (click)="entrar(p)" [disabled]="busy || p.vagasRestantes === 0">
+                    {{ p.vagasRestantes ? 'Participar' : 'Lotada' }}
+                  </button>
+                }
+                @if (inscrito(p)) {
+                  <p>Você está inscrito{{ host(p) ? ' como organizador' : '' }}.</p>
+                }
+              </div>
+            </article>
+          } @empty {
+            <p>Nenhuma partida encontrada. Você pode criar seu próximo rachão.</p>
+          }
+        </div>
+      }
+    </section>
+    @if (detalhe) {
+      <section class="detail-panel" aria-labelledby="participantes">
+        <h2 id="participantes">Participantes — {{ detalhe.local }}</h2>
+        <ul>
+          @for (i of participantes; track i.id) {
+            <li>{{ i.jogadorNome }}</li>
+          } @empty {
+            <li>Sem participantes.</li>
+          }
+        </ul>
+        <button (click)="detalhe = null">Fechar participantes</button>
+      </section>
+    }
+    @if (confirmacao) {
+      <section class="detail-panel" role="alert">
+        <p>Cancelar a partida em {{ confirmacao.local }} para todos os participantes?</p>
+        <button (click)="cancelar(confirmacao)" [disabled]="busy">Confirmar cancelamento</button
+        ><button (click)="confirmacao = null" [disabled]="busy">Voltar</button>
+      </section>
+    }
+    <app-criar-partida
+      [aberto]="modalAberto"
+      [partida]="editar"
+      (fechar)="fecharModal()"
+      (salvo)="carregar()"
+    />
+  </main>
+</div>

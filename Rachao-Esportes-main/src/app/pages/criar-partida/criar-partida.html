@@ -1,0 +1,78 @@
+@if (aberto) {
+  <div class="modal-overlay" (keydown.escape)="fecharModal()">
+    <section class="modal-content" role="dialog" aria-modal="true" aria-labelledby="titulo-partida">
+      <header class="modal-header">
+        <div>
+          <h2 id="titulo-partida">{{ partida ? 'Editar partida' : 'Criar partida' }}</h2>
+          <p>Organize seu próprio rachão.</p>
+        </div>
+        <button class="modal-close" (click)="fecharModal()" [disabled]="busy" aria-label="Fechar">
+          ×
+        </button>
+      </header>
+      <form [formGroup]="partidaForm" (ngSubmit)="onSubmit()">
+        <div class="modal-body">
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="esporte">Esporte</label
+              ><select id="esporte" formControlName="esporteId">
+                <option [ngValue]="0">Selecione</option>
+                @for (e of esportes; track e.id) {
+                  <option [ngValue]="e.id">{{ e.esporte }}</option>
+                }
+              </select>
+              @if (!esportes.length) {
+                <button type="button" (click)="carregarEsportes()">Recarregar esportes</button>
+              }
+            </div>
+            <div class="form-field">
+              <label for="dataHora">Data e hora (São Paulo)</label
+              ><input id="dataHora" type="datetime-local" formControlName="dataHora" required />
+            </div>
+            <div class="form-field">
+              <label for="qtdTimes">Times</label
+              ><input
+                id="qtdTimes"
+                type="number"
+                min="2"
+                max="20"
+                step="1"
+                formControlName="qtdTimes"
+                required
+              />
+            </div>
+            <div class="form-field">
+              <label for="qtdJogadoresTime">Jogadores por time</label
+              ><input
+                id="qtdJogadoresTime"
+                type="number"
+                min="1"
+                max="50"
+                step="1"
+                formControlName="qtdJogadoresTime"
+                required
+              />
+            </div>
+            <div class="form-field">
+              <label for="local">Local e endereço completo</label
+              ><input
+                id="local"
+                formControlName="local"
+                required
+                placeholder="Quadra, rua, número e cidade"
+              />
+            </div>
+          </div>
+          <p>Capacidade: {{ totalParticipantes }} jogadores. O organizador já ocupa uma vaga.</p>
+          <p class="error-message" role="alert">{{ erro }}</p>
+        </div>
+        <footer class="modal-footer">
+          <button type="button" (click)="fecharModal()" [disabled]="busy">Voltar</button
+          ><button type="submit" [disabled]="busy || !esportes.length">
+            {{ busy ? 'Salvando…' : 'Salvar partida' }}
+          </button>
+        </footer>
+      </form>
+    </section>
+  </div>
+}

@@ -1,6 +1,8 @@
 package com.projeto.rachao.entidades;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -36,7 +38,9 @@ public class Partida {
     @Column(name = "DATA_HORA")
     private LocalDateTime dataHora;
 
-    private StatusPartida.StatusAtual status;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private StatusPartida.StatusAtual status = StatusPartida.StatusAtual.PENDENTE;
 
     private String local;
 
@@ -78,6 +82,14 @@ public class Partida {
 
     public void setQtdTimes(Integer qtdTimes) {
         this.qtdTimes = qtdTimes;
+    }
+
+    public Integer getQtdJogadoresTime() {
+        return qtdJogadoresTime;
+    }
+
+    public void setQtdJogadoresTime(Integer qtdJogadoresTime) {
+        this.qtdJogadoresTime = qtdJogadoresTime;
     }
 
     public LocalDateTime getDataHora() {

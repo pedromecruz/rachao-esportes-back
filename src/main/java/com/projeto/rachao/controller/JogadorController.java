@@ -2,6 +2,10 @@
 package com.projeto.rachao.controller;
 
 import java.util.List;
+import com.projeto.rachao.config.AuthContext;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +26,7 @@ public class JogadorController {
     public JogadorController(JogadorService jogadorService) {
         this.jogadorService = jogadorService;
     }
-    
+
     // LISTAR JOGADORES
     @GetMapping
     public ResponseEntity<List<JogadorDTO>> listar() {
@@ -51,7 +55,10 @@ public class JogadorController {
     @PutMapping("/{id}/perfil")
     public ResponseEntity<JogadorDTO> atualizarPerfil(
             @PathVariable Long id,
-            @RequestBody JogadorPerfilDTO dto) {
+            @RequestBody JogadorPerfilDTO dto, HttpServletRequest request) {
+        if (!AuthContext.id(request).equals(id)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Só é possível alterar o próprio perfil.");
+        }
 
         JogadorDTO jogador = jogadorService.atualizarPerfil(id, dto);
 
@@ -60,7 +67,10 @@ public class JogadorController {
 
     // EXCLUIR JOGADOR
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluir(@PathVariable Long id) {
+    public ResponseEntity<Void> excluir(@PathVariable Long id, HttpServletRequest request) {
+        if (!AuthContext.id(request).equals(id)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Só é possível excluir a própria conta.");
+        }
 
         jogadorService.excluir(id);
 
